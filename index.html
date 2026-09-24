@@ -73,10 +73,6 @@
             </div>
 
             <div class="flex items-center gap-2 sm:gap-3">
-                <button id="exportHtmlBtn" title="Download standalone HTML file for hosting on GitHub Pages" class="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-sm active:scale-95">
-                    <i class="fa-brands fa-github text-sm"></i>
-                    <span class="hidden sm:inline">Export for GitHub</span>
-                </button>
                 <button id="exportCsvBtn" title="Export projected schedule to CSV" class="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all shadow-sm active:scale-95">
                     <i class="fa-solid fa-download text-brand-500"></i>
                     <span class="hidden sm:inline">Export CSV</span>
@@ -498,8 +494,21 @@
 
     </main>
 
-    <footer class="border-t border-slate-800/80 bg-slate-950 py-6 mt-12 text-center text-xs text-slate-500">
-        <p>Interactive Salary & Investment Projection Suite &bull; Ready for deployment on GitHub Pages.</p>
+    <footer class="border-t border-slate-800/80 bg-slate-950/80 backdrop-blur-sm py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+            <div class="flex items-center gap-2.5">
+                <span class="inline-flex h-2 w-2 rounded-full bg-brand-500 shadow-sm shadow-brand-500/50"></span>
+                <span class="font-semibold text-slate-200">Financial Projection Suite</span>
+                <span class="text-slate-700">&bull;</span>
+                <span class="text-slate-400">Long-Term Wealth & Income Modeler</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span>&copy; <span id="copyrightYear">2026</span></span>
+                <span class="text-slate-700">&bull;</span>
+                <span>Crafted by</span>
+                <span class="font-medium text-slate-200 hover:text-brand-400 transition-colors">Ryan Rahman</span>
+            </div>
+        </div>
     </footer>
 
     <script>
@@ -928,18 +937,11 @@
             document.body.removeChild(link);
         }
 
-        function exportSelfAsHTML() {
-            const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-            const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "index.html";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
         function setupEventListeners() {
+            // Auto update copyright year
+            const yearElem = document.getElementById('copyrightYear');
+            if (yearElem) yearElem.textContent = new Date().getFullYear();
+
             [startingSalaryInput, annualRaiseInput, taxRateInput, inflationRateInput, salaryCustomYearsInput].forEach(inp => {
                 inp.addEventListener('input', runSalaryCalculations);
             });
@@ -983,7 +985,6 @@
             });
 
             document.getElementById('exportCsvBtn').addEventListener('click', exportCSV);
-            document.getElementById('exportHtmlBtn').addEventListener('click', exportSelfAsHTML);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
